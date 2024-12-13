@@ -1,11 +1,9 @@
-/*
-function authorizeRole(requiredRole) {
-    return (req, res, next) => {
-        if (req.user.role !== requiredRole) {
-            return res.status(403).send({ message: 'Accesso negato, ruolo insufficiente' });
-        }
-        next();
-    };
+module.exports = function authorizeRole(req, res, next) {
+    if (req.user !== 'admin') {
+        return res.status(403).send({ message: 'Access denied!' });
+        
+    } else {
+        next()
+    }
+    
 }
-
-*/

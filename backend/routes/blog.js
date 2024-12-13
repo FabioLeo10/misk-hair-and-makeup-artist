@@ -4,7 +4,7 @@ const BlogModel = require('../models/BlogModel');
 const multer = require('multer')
 const cloudinary = require('cloudinary').v2;
 const {internalStorage, cloudinaryStorage, filter} = require('../middleware/multer/storages');
-
+const authorizeRole = require('../middleware/authorizeRole')
 
 
 const upload = multer({storage: internalStorage});
@@ -24,11 +24,11 @@ blog.get('/blog', async(req, res, next) => {
     }
 })
 
-blog.post('/blog/create', async(req, res, next) => {
+blog.post('/blog/create', authorizeRole, async(req, res, next) => {
     const newBlog = new BlogModel(req.body);
 })
 
-blog.post('/blog/upload/cloud', cloud.single('img'), async (req, res, next) => {
+blog.post('/blog/upload/cloud', authorizeRole, cloud.single('img'), async (req, res, next) => {
     try {
         res.status(200).json({img: req.file.path})
     } catch (e) {
@@ -37,7 +37,7 @@ blog.post('/blog/upload/cloud', cloud.single('img'), async (req, res, next) => {
     }
 })
 
-blog.post('/blog/upload', upload.single('img'), async(req, res, next) => {
+blog.post('/blog/upload', authorizeRole, upload.single('img'), async(req, res, next) => {
     try {
         const url = `${req.protocol}://${req.get('host')}`;
         const imgUrl = req.file.filename

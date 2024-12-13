@@ -3,9 +3,10 @@ const users = express.Router();
 const userModel = require('../models/UserModel');
 const UserModel = require('../models/UserModel');
 const { validateUserBody } = require('../middleware/validateUser');
+const authorizeRole = require('../middleware/authorizeRole')
 
 
-users.get('/users', async (req, res, next) => {
+users.get('/users', authorizeRole, async (req, res, next) => {
     try {
         const users = await userModel.find() 
         
@@ -28,17 +29,9 @@ users.get('/users', async (req, res, next) => {
 
 users.post('/users/create', validateUserBody, async (req, res, next) => {
     console.log(req.body)
-    const newUser = new UserModel({
-        name: req.body.name,
-        surname: req.body.surname,
-        dob: new Date(req.body.dob),
-        email: req.body.email,
-        password: req.body.password,
-        username: req.body.username,
-        gender: req.body.gender,
-        address: req.body.address,
-        role: req.body.role,
-    })
+    
+    const newUser = new UserModel(req.body);
+
     try {
         const user = await newUser.save()
         res.status(201)

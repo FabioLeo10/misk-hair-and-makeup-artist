@@ -7,6 +7,10 @@ const blogRoute = require('./routes/blog');
 const usersRoute = require('./routes/users');
 const emailRoute = require('./routes/sendEmail');
 const bookingRoute = require('./routes/bookings');
+const loginRoute = require('./routes/login');
+const worksRoute = require('./routes/myWorks')
+
+const genericErrorHandler = require('./middleware/genericErrorHandler')
 
 const path = require('path');
 
@@ -18,11 +22,15 @@ const server = express();
 server.use(express.json());
 server.use(cors());
 
+server.use(genericErrorHandler)
+
 server.use('/uploads', express.static(path.join(__dirname,'/uploads')));
 server.use('/', blogRoute);
 server.use('/',usersRoute);
 server.use('/', emailRoute);
-server.use('/', bookingRoute)
+server.use('/', bookingRoute);
+server.use('/', loginRoute);
+server.use('/', worksRoute)
 
 
 
