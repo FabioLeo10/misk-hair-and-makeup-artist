@@ -20,7 +20,7 @@ const PORT = 4040;
 const server = express();
 
 server.use(express.json());
-server.use(cors());
+server.use(cors({ origin: 'http://localhost:4040' }));
 
 server.use(genericErrorHandler)
 

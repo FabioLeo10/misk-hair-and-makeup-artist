@@ -11,12 +11,12 @@ cloudinary.config({
 const cloudinaryStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'blog-server-images', // La cartella verrà creata automaticamente
+        folder: 'blog-server-images', 
         allowed_formats: ['jpg', 'png', 'jpeg', 'mp4'],
-        format: async (req, file) => 'jpg', // Converte tutti i file in formato JPG
+        format: async (req, file) => 'jpg', 
         public_id: (req, file) => {
             const name = file.originalname.split('.')[0];
-            return `${name}-${Date.now()}`; // Nome unico per ogni file
+            return `${name}-${Date.now()}`;
         },
     },
 });

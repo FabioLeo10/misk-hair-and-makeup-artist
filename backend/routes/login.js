@@ -4,10 +4,12 @@ const bcrypt = require('bcrypt');
 const UserModel = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
 
-login.post('/login', async (req, res, next) => {
+
+login.post('/login',  async (req, res, next) => {
     try {
         const user = await UserModel.findOne({ email: req.body.email });
-        console.log('Email ricevuta:', req.body.email);
+        
+        
 
         if (!user) {
             return res
@@ -18,6 +20,9 @@ login.post('/login', async (req, res, next) => {
                 })
         }
         const isPasswordValid = await bcrypt.compare(req.body.password, user.password) 
+        
+        console.log('Password inserita dall\'utente:', req.body.password);
+        console.log('Password hashata nel database:', user.password);
 
        
         if (!isPasswordValid) {
@@ -33,7 +38,7 @@ login.post('/login', async (req, res, next) => {
         const token = jwt.sign({
         
             role: user.role,
-            username: role.username,
+            username: user.username,
             dob: user.dob,
 
         }, process.env.JWT_SECRET,{
